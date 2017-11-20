@@ -7,7 +7,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import javax.swing.*;
+
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -26,35 +28,22 @@ public class SeckillDaoTest {
     private SeckillDao seckillDao;
     @Test
     public void reduceNumber() throws Exception {
+        /**
+         * 11:23:08.642 [main] DEBUG o.m.s.t.SpringManagedTransaction - JDBC Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7fd50002] will not be managed by Spring
+         11:23:08.668 [main] DEBUG o.s.dao.SeckillDao.reduceNumber - ==>  Preparing:
+         update seckill set number = number - 1
+         where seckill_id = ?
+         and start_time <= ?
+         and end_time >= ?
+         and number>0;
+         Parameters:1000(Long), 2017-11-20 11:23:08.268(Timestamp), 2017-11-20 11:23:08.268(Timestamp)
+         */
+        Date killTime = new Date();
+        int updateCount = seckillDao.reduceNumber(1000L,killTime);
+        System.out.println("updateCount"+updateCount);
     }
 
     @Test
-    /**
-     * Caused by: org.xml.sax.SAXParseException; lineNumber: 7; columnNumber: 140; cvc-elt.1: 找不到元素 'beans' 的声明。
-     at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(ErrorHandlerWrapper.java:203)
-     at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.error(ErrorHandlerWrapper.java:134)
-     at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:396)
-     at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:327)
-     at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:284)
-     at com.sun.org.apache.xerces.internal.impl.xs.XMLSchemaValidator.handleStartElement(XMLSchemaValidator.java:1900)
-     at com.sun.org.apache.xerces.internal.impl.xs.XMLSchemaValidator.startElement(XMLSchemaValidator.java:740)
-     at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.scanStartElement(XMLNSDocumentScannerImpl.java:374)
-     at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl$NSContentDriver.scanRootElementHook(XMLNSDocumentScannerImpl.java:613)
-     at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:3132)
-     at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl$PrologDriver.next(XMLDocumentScannerImpl.java:852)
-     at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:602)
-     at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:112)
-     at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:505)
-     at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:841)
-     at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:770)
-     at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141)
-     at com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:243)
-     at com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl.parse(DocumentBuilderImpl.java:339)
-     at org.springframework.beans.factory.xml.DefaultDocumentLoader.loadDocument(DefaultDocumentLoader.java:76)
-     at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadDocument(XmlBeanDefinitionReader.java:429)
-     at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:391)
-     ... 37 more
-     */
     public void queryById() throws Exception {
         long id =1000;
         Seckill seckill = seckillDao.queryById(id);
@@ -64,6 +53,16 @@ public class SeckillDaoTest {
 
     @Test
     public void queryAll() throws Exception {
+        /**
+         *Caused by: org.apache.ibatis.binding.BindingException: Parameter 'offset' not found.
+         * Available parameters are [0, 1, param1, param2]
+         */
+        //java没有保存形参的记录:queryAll(int offset, int limit) -->queryAll(int arg0,int arg1)
+        //需要加形参注解
+        List<Seckill> seckills = seckillDao.queryAll(0,100);
+        for(Seckill seckill:seckills){
+            System.out.println(seckill);
+        }
     }
 
 }
