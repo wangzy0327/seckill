@@ -29,5 +29,7 @@ public interface SeckillDao {
      * @param limit
      * @return
      */
+    //需要加注解@Param(""),否则java将方法加载后, queryAll(int offset,int limit) -> queryAll(arg0,arg1)
+    // 注入sql参数时，找不到
     List<Seckill> queryAll(@Param("offset") int offset, @Param("limit")int limit);
 }

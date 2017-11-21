@@ -48,7 +48,7 @@ public class SeckillDaoTest {
         long id =1000;
         Seckill seckill = seckillDao.queryById(id);
         System.out.println(seckill.getName());
-        System.out.println(seckill);;
+        System.out.println(seckill);
     }
 
     @Test
