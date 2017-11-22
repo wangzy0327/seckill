@@ -1,4 +1,4 @@
-package org.seckill.dfo;
+package org.seckill.dto;
 
 import org.seckill.entity.SuccessKilled;
 import org.seckill.enums.SeckillStatEnum;

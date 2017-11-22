@@ -29,7 +29,7 @@ public class SeckillDaoTest {
     @Test
     public void reduceNumber() throws Exception {
         /**
-         * 11:23:08.642 [main] DEBUG o.m.s.t.SpringManagedTransaction - JDBC Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7fd50002] will not be managed by Spring
+         * 11:23:08.642 [main] DEBUG o.m.s.dto.SpringManagedTransaction - JDBC Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7fd50002] will not be managed by Spring
          11:23:08.668 [main] DEBUG o.s.dao.SeckillDao.reduceNumber - ==>  Preparing:
          update seckill set number = number - 1
          where seckill_id = ?

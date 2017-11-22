@@ -2,8 +2,8 @@ package org.seckill.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seckill.dfo.Exposer;
-import org.seckill.dfo.SeckillExecution;
+import org.seckill.dto.Exposer;
+import org.seckill.dto.SeckillExecution;
 import org.seckill.entity.Seckill;
 import org.seckill.exception.RepeatKillException;
 import org.seckill.exception.SeckillCloseException;
@@ -15,8 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:spring/spring-dao.xml",
@@ -59,16 +57,43 @@ public class SeckillServiceTest {
          */
     }
 
+    /**
+     * 集成测试秒杀逻辑,注意测试重复秒杀
+     * @throws Exception
+     */
+    @Test
+    public void executeLogic() throws Exception{
+        long id = 1000L;
+        long userPhone = 13589099903L;
+        Exposer exposer = seckillService.exportSeckillUrl(id);
+        if(exposer.isExposed()){
+            logger.info("exposer={}"+exposer);
+            try {
+                String md5 = exposer.getMd5();
+                SeckillExecution seckillExecution = seckillService.executeSeckill(id,userPhone,md5);
+                logger.info("result={}"+seckillExecution);
+            } catch (RepeatKillException e) {
+                logger.error(e.getMessage());
+            }catch (SeckillCloseException e) {
+                logger.error(e.getMessage());
+            }catch (SeckillException e) {
+                logger.error(e.getMessage());
+            }
+        }else{
+            //秒杀结束
+            logger.info("exposer={}"+exposer);
+        }
+    }
+
     @Test
     public void executeSeckill() throws Exception {
         long id = 1000L;
         long userPhone = 13589099903L;
         String md5 = "29a452e378dca349b5968fc4b184c3b5";
 
-        SeckillExecution seckillExecution = null;
         try {
-            seckillExecution = seckillService.executeSeckill(id,userPhone,md5);
-            logger.info("seckillExeccution"+seckillExecution);
+            SeckillExecution seckillExecution = seckillService.executeSeckill(id,userPhone,md5);
+            logger.info("seckillExeccution={}"+seckillExecution);
         } catch (RepeatKillException e) {
             logger.error(e.getMessage());
         }catch (SeckillCloseException e) {
