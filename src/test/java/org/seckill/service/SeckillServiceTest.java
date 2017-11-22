@@ -59,6 +59,7 @@ public class SeckillServiceTest {
 
     /**
      * 测试代码完整逻辑,注意可重复执行
+     * 集成测试秒杀逻辑,注意测试重复秒杀
      * @throws Exception
      */
     @Test
@@ -82,6 +83,8 @@ public class SeckillServiceTest {
         }else{
             //秒杀未开启
             logger.warn("exposer={}"+exposer);
+            //秒杀结束
+            logger.info("exposer={}"+exposer);
         }
     }
 
@@ -94,6 +97,7 @@ public class SeckillServiceTest {
         try {
             SeckillExecution seckillExecution = seckillService.executeSeckill(id,userPhone,md5);
             logger.info("execution={}"+seckillExecution);
+            logger.info("seckillExeccution={}"+seckillExecution);
         } catch (RepeatKillException e) {
             logger.error(e.getMessage());
         }catch (SeckillCloseException e) {
