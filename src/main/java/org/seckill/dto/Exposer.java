@@ -1,4 +1,4 @@
-package org.seckill.dfo;
+package org.seckill.dto;
 
 /**
  * 暴露秒杀地址DTO
@@ -35,6 +35,30 @@ public class Exposer {
     public Exposer(boolean exposed, long seckillId) {
         this.exposed = exposed;
         this.seckillId = seckillId;
+    }
+
+    public boolean isExposed() {
+        return exposed;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public long getSeckillId() {
+        return seckillId;
+    }
+
+    public long getNow() {
+        return now;
+    }
+
+    public long getStart() {
+        return start;
+    }
+
+    public long getEnd() {
+        return end;
     }
 
     @Override
